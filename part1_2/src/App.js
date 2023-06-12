@@ -30,15 +30,38 @@ const Rating = (props) => {
   );
 };
 
+const Statistics = (props) => {
+  const [good, neutral, bad] = props.ratings;
+  const sum = good + neutral + bad;
+  const average = (good - bad) / sum; // good: 1, neutral: 0, bad: -1
+  const positive = ((good / sum) * 100).toString() + '%'; // convert to string to concat % sign
+  if (sum === 0) {
+    return (
+      <>
+        <p>No feedback given</p>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Rating number={good} text='good' />
+        <Rating number={neutral} text='neutral' />
+        <Rating number={bad} text='bad' />
+        <Rating number={sum} text='all' />
+        <Rating number={average} text='average' />
+        <Rating number={positive} text='positive' />
+      </>
+    );
+  }
+};
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const sum = good + neutral + bad;
-  const average = (good - bad) / sum;
-  const positive = good / sum * 100;
+  const ratings = [good, neutral, bad];
   const handleGoodClick = () => {
     setGood(good + 1);
   };
@@ -58,12 +81,7 @@ const App = () => {
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' />
       <Header text='statistics' />
-      <Rating number={good} text='good' />
-      <Rating number={neutral} text='neutral' />
-      <Rating number={bad} text='bad' />
-      <Rating number={sum} text='all' />
-      <Rating number={average} text='average' />
-      <Rating number={positive.toString()+'%'} text='positive' />
+      <Statistics ratings={ratings} />
     </div>
   );
 };
