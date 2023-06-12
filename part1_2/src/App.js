@@ -19,6 +19,7 @@ const Button = (props) => {
 };
 
 const Rating = (props) => {
+  // render the number of ratings for each category
   const { text, number } = props;
   return (
     <>
@@ -53,6 +54,7 @@ const App = () => {
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' />
+      <Header text='statistics' />
       <Rating number={good} text='good' />
       <Rating number={neutral} text='neutral' />
       <Rating number={bad} text='bad' />
