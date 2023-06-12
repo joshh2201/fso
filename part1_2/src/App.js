@@ -18,7 +18,7 @@ const Button = (props) => {
   );
 };
 
-const Rating = (props) => {
+const StatLine = (props) => {
   // render the number of ratings for each category
   const { text, number } = props;
   return (
@@ -44,12 +44,12 @@ const Statistics = (props) => {
   } else {
     return (
       <>
-        <Rating number={good} text='good' />
-        <Rating number={neutral} text='neutral' />
-        <Rating number={bad} text='bad' />
-        <Rating number={sum} text='all' />
-        <Rating number={average} text='average' />
-        <Rating number={positive} text='positive' />
+        <StatLine number={good} text='good' />
+        <StatLine number={neutral} text='neutral' />
+        <StatLine number={bad} text='bad' />
+        <StatLine number={sum} text='all' />
+        <StatLine number={average} text='average' />
+        <StatLine number={positive} text='positive' />
       </>
     );
   }
