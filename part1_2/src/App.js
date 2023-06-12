@@ -18,6 +18,17 @@ const Button = (props) => {
   );
 };
 
+const Rating = (props) => {
+  const { text, number } = props;
+  return (
+    <>
+      <p>
+        {text} {number}
+      </p>
+    </>
+  );
+};
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -42,6 +53,9 @@ const App = () => {
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' />
+      <Rating number={good} text='good' />
+      <Rating number={neutral} text='neutral' />
+      <Rating number={bad} text='bad' />
     </div>
   );
 };
