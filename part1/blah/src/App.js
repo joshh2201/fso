@@ -1,5 +1,13 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
+const Button = (props) => {
+  const { handleClick, text } = props;
+  return (
+    <>
+      <button onClick={handleClick}>{text}</button>
+    </>
+  );
+};
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -9,16 +17,21 @@ const App = () => {
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
-    'The only way to go fast, is to go well.'
-  ]
-   
-  const [selected, setSelected] = useState(0)
+    'The only way to go fast, is to go well.',
+  ];
 
+  const [selected, setSelected] = useState(0);
+
+  const handleClick = () => {
+    const newSelected = Math.floor(Math.random() * anecdotes.length);
+    setSelected(newSelected);
+  };
   return (
     <div>
-      {anecdotes[selected]}
+      <div>{anecdotes[selected]}</div>
+      <Button handleClick={handleClick} text='next anecdote'/>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
