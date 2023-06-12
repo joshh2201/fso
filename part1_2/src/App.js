@@ -10,22 +10,9 @@ const Header = (props) => {
 
 const Button = (props) => {
   const { handleClick, text } = props;
-  console.log(props);
   return (
     <>
       <button onClick={handleClick}>{text}</button>
-    </>
-  );
-};
-
-const StatLine = (props) => {
-  // render the number of ratings for each category
-  const { text, number } = props;
-  return (
-    <>
-      <p>
-        {text} {number}
-      </p>
     </>
   );
 };
@@ -44,12 +31,32 @@ const Statistics = (props) => {
   } else {
     return (
       <>
-        <StatLine number={good} text='good' />
-        <StatLine number={neutral} text='neutral' />
-        <StatLine number={bad} text='bad' />
-        <StatLine number={sum} text='all' />
-        <StatLine number={average} text='average' />
-        <StatLine number={positive} text='positive' />
+        <table>
+          <tr>
+            <td>good</td>
+            <td>{good}</td>
+          </tr>
+          <tr>
+            <td>neutral</td>
+            <td>{neutral}</td>
+          </tr>
+          <tr>
+            <td>bad</td>
+            <td>{bad}</td>
+          </tr>
+          <tr>
+            <td>all</td>
+            <td>{sum}</td>
+          </tr>
+          <tr>
+            <td>average</td>
+            <td>{average}</td>
+          </tr>
+          <tr>
+            <td>positive</td>
+            <td>{positive}</td>
+          </tr>
+        </table>
       </>
     );
   }
