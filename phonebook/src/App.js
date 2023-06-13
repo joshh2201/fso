@@ -11,10 +11,14 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName };
-    console.log(newPerson);
-    setPersons(persons.concat(newPerson));
-    setNewName('');
+    const nameExists = personCopy.filter((person) => person.name === newName);
+    if (nameExists.length > 0) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      const newPerson = { name: newName };
+      setPersons(persons.concat(newPerson));
+      setNewName('');
+    }
   };
 
   const personCopy = [...persons];
