@@ -1,5 +1,13 @@
 import { useState } from 'react';
 
+const Header = (props) => {
+  return (
+    <>
+      <h1>{props.text}</h1>
+    </>
+  );
+};
+
 const Button = (props) => {
   const { handleClick, text } = props;
   return (
@@ -40,12 +48,17 @@ const App = () => {
     copy[selected] += 1;
     setPoints(copy);
   };
+  const maxSelected = points.indexOf(Math.max(...points));
   return (
     <div>
+      <Header text='Anecdote of the day' />
       <div>{anecdotes[selected]}</div>
       <Vote points={points} selected={selected} />
       <Button handleClick={addVote} text='vote' />
       <Button handleClick={handleClick} text='next anecdote' />
+      <Header text='Anecdote with most votes' />
+      <div>{anecdotes[maxSelected]}</div>
+      <Vote points={points} selected={maxSelected} />
     </div>
   );
 };
