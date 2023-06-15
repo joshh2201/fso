@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Input = (props) => {
   const { value, handleChange, text } = props;
-  console.log(value, text, handleChange);
   return (
     <div key={text}>
       {text}: <input value={value} onChange={handleChange} />
@@ -21,11 +21,11 @@ const Person = (props) => {
 
 const PersonForm = (props) => {
   const { handleSubmit, inputs } = props;
-  console.log(inputs);
   return (
     <form onSubmit={handleSubmit}>
       {inputs.map((input) => (
         <Input
+          key={input.text}
           text={input.text}
           value={input.value}
           handleChange={input.handleChange}
@@ -39,15 +39,19 @@ const PersonForm = (props) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    console.log('effect');
+    axios.get('http://localhost:3001/persons').then((response) => {
+      console.log('promise fulfilled');
+      setPersons(response.data);
+    });
+  }, []);
+  console.log('render', persons.length, 'people');
 
   const handleNameChange = (event) => {
     // update newName as users type in input
@@ -95,6 +99,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Input
+        key='filter'
         text='filter shown with'
         value={query}
         handleChange={handleQueryChange}
@@ -103,7 +108,7 @@ const App = () => {
       <PersonForm handleSubmit={addNewPerson} inputs={inputs} />
       <h2>Numbers</h2>
       {personsFiltered.map((person) => (
-        <Person name={person.name} number={person.number} />
+        <Person key={person.name} name={person.name} number={person.number} />
       ))}
     </div>
   );
