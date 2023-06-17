@@ -4,17 +4,21 @@ import personService from './services/persons';
 const Input = (props) => {
   const { value, handleChange, text } = props;
   return (
-    <div key={text}>
+    <div>
       {text}: <input value={value} onChange={handleChange} />
     </div>
   );
 };
 
 const Person = (props) => {
-  const { name, number } = props;
+  const { person, handleClick } = props;
+  const { name, number, id } = person;
   return (
-    <p key={name}>
-      {name} {number}
+    <p>
+      {name} {number}{' '}
+      <button data-key={id} data-name={name} onClick={handleClick}>
+        delete
+      </button>
     </p>
   );
 };
@@ -45,7 +49,7 @@ const App = () => {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    personService.getAll().then(initialPersons => {
+    personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
   }, []);
@@ -56,12 +60,12 @@ const App = () => {
   };
 
   const handleNumberChange = (event) => {
-    // update newName as users type in input
+    // update newNumber as users type in input
     setNewNumber(event.target.value);
   };
 
   const handleQueryChange = (event) => {
-    // update newName as users type in input
+    // update query as users type in input
     setQuery(event.target.value);
   };
 
@@ -73,11 +77,21 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     } else {
       const newPerson = { name: newName, number: newNumber };
-      personService.create(newPerson).then(returnedPerson => {
+      personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
       });
+    }
+  };
+
+  const deletePerson = (event) => {
+    const name = event.target.getAttribute('data-name');
+    if (window.confirm(`Delete ${name}?`)) {
+      const id = parseInt(event.target.getAttribute('data-key'));
+      personService
+        .remove(id)
+        .then(() => setPersons(persons.filter((person) => person.id !== id)));
     }
   };
 
@@ -107,7 +121,7 @@ const App = () => {
       <PersonForm handleSubmit={addNewPerson} inputs={inputs} />
       <h2>Numbers</h2>
       {personsFiltered.map((person) => (
-        <Person key={person.id} name={person.name} number={person.number} />
+        <Person key={person.id} person={person} handleClick={deletePerson} />
       ))}
     </div>
   );
