@@ -73,10 +73,21 @@ const App = () => {
     event.preventDefault();
     // filter to check if newName is in persons already
     const nameExists = persons.filter((person) => person.name === newName);
+    const newPerson = { name: newName, number: newNumber };
     if (nameExists.length > 0) {
-      alert(`${newName} is already added to phonebook`);
+      const updatePrompt = `${newName} is already added to phonebook, replace the old number with a new one?`;
+      if (window.confirm(updatePrompt)) {
+        const updatedPerson = { ...nameExists[0], number: newNumber };
+        const updateId = updatedPerson.id;
+        personService.update(updateId, updatedPerson).then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id === updateId ? updatedPerson : person
+            )
+          );
+        });
+      }
     } else {
-      const newPerson = { name: newName, number: newNumber };
       personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName('');
