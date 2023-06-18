@@ -92,19 +92,33 @@ const App = () => {
       if (window.confirm(updatePrompt)) {
         const updatedPerson = { ...nameExists[0], number: newNumber };
         const updateId = updatedPerson.id;
-        personService.update(updateId, updatedPerson).then((returnedPerson) => {
-          setPersons(
-            persons.map((person) =>
-              person.id === updateId ? updatedPerson : person
-            )
-          );
-        });
+        const { name } = updatedPerson;
+        personService
+          .update(updateId, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id === updateId ? updatedPerson : person
+              )
+            );
+            updateErrorMessage(
+              `Updated ${name}'${name.at(-1) === 's' ? '' : 's'} number`,
+              'success'
+            );
+          })
+          .catch(() => {
+            updateErrorMessage(
+              `${name} was already removed from server`,
+              'error'
+            );
+          });
       }
     } else {
       personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
+        updateErrorMessage(`Added ${returnedPerson.name}`, 'success');
       });
     }
   };
@@ -113,10 +127,19 @@ const App = () => {
     const name = event.target.getAttribute('data-name');
     if (window.confirm(`Delete ${name}?`)) {
       const id = parseInt(event.target.getAttribute('data-key'));
-      personService
-        .remove(id)
-        .then(() => setPersons(persons.filter((person) => person.id !== id)));
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+        updateErrorMessage(`Deleted ${name}`, 'success');
+      });
     }
+  };
+
+  const updateErrorMessage = (message, type) => {
+    setErrorMessage({
+      message: message,
+      errorType: type,
+    });
+    setTimeout(() => setErrorMessage({ message: null, errorType: null }), 3000);
   };
 
   const inputs = [
