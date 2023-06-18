@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
 import personService from './services/persons';
+import './index.css';
+
+const Notification = (props) => {
+  const { message, className } = props;
+  if (message === null) {
+    return null;
+  }
+  return <div className={className}>{message}</div>;
+};
 
 const Input = (props) => {
   const { value, handleChange, text } = props;
@@ -47,6 +56,10 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [query, setQuery] = useState('');
+  const [errorMessage, setErrorMessage] = useState({
+    message: null,
+    errorType: null,
+  });
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -122,6 +135,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={errorMessage.message}
+        className={errorMessage.errorType}
+      />
       <Input
         key='filter'
         text='filter shown with'
