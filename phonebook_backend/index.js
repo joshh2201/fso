@@ -46,5 +46,35 @@ app.get('/api/persons/:id', (request, response) => {
   }
 });
 
+const generateId = () => {
+  const maxId = 10000000;
+  let id;
+  do {
+    id = Math.floor(Math.random() * maxId);
+  } while (persons.some((person) => person.id === id));
+  return id;
+};
+
+const sendErrorResponse = (response, message) => {
+  return response.status(400).json({ error: message });
+};
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+  if (!body.number && !body.name) {
+    return sendErrorResponse(response, 'Name and Number Missing');
+  } else if (!body.number) {
+    return sendErrorResponse(response, 'Number Missing');
+  } else if (!body.name) {
+    return sendErrorResponse(response, 'Name Missing');
+  }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  };
+  persons = persons.concat(person);
+  response.json(person);
+});
+
 const PORT = 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
