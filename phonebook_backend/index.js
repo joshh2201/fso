@@ -45,21 +45,19 @@ const sendErrorResponse = (response, message) => {
   return response.status(400).json({ error: message });
 };
 app.post('/api/persons', (request, response) => {
-  const body = request.body;
-  if (!body.number && !body.name) {
+  const {name, number} = request.body;
+  if (!number && !name) {
     return sendErrorResponse(response, 'Name and Number Missing');
-  } else if (!body.number) {
+  } else if (!number) {
     return sendErrorResponse(response, 'Number Missing');
-  } else if (!body.name) {
+  } else if (!name) {
     return sendErrorResponse(response, 'Name Missing');
   }
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: generateId(),
-  };
-  persons = persons.concat(person);
-  response.json(person);
+  const person = new Person({ name: name, number: number });
+  person.save().then((result) => {
+    console.log(`added ${name} number ${number} to phonebook`);
+    response.json(person);
+  })
 });
 
 app.delete('/api/persons/:id', (request, response) => {
