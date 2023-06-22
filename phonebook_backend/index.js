@@ -23,29 +23,26 @@ app.get('/api/info', (request, response) => {
 });
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      response.status(500).end();
+    });
 });
-
-const generateId = () => {
-  const maxId = 10000000;
-  let id;
-  do {
-    id = Math.floor(Math.random() * maxId);
-  } while (persons.some((person) => person.id === id));
-  return id;
-};
 
 const sendErrorResponse = (response, message) => {
   return response.status(400).json({ error: message });
 };
+
 app.post('/api/persons', (request, response) => {
-  const {name, number} = request.body;
+  const { name, number } = request.body;
   if (!number && !name) {
     return sendErrorResponse(response, 'Name and Number Missing');
   } else if (!number) {
@@ -57,7 +54,7 @@ app.post('/api/persons', (request, response) => {
   person.save().then((result) => {
     console.log(`added ${name} number ${number} to phonebook`);
     response.json(person);
-  })
+  });
 });
 
 app.delete('/api/persons/:id', (request, response) => {
