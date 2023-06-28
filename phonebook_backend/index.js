@@ -36,37 +36,29 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-const sendErrorResponse = (response, message) => {
-  return response.status(400).json({ error: message });
-};
-
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, respons, next) => {
   const { name, number } = request.body;
-  if (!number && !name) {
-    return sendErrorResponse(response, 'Name and Number Missing');
-  } else if (!number) {
-    return sendErrorResponse(response, 'Number Missing');
-  } else if (!name) {
-    return sendErrorResponse(response, 'Name Missing');
-  }
-  const person = new Person({ name: name, number: number });
-  person.save().then((result) => {
-    console.log(`added ${name} number ${number} to phonebook`);
-    response.json(person);
-  });
+  const person = new Person({ name, number });
+  person
+    .save()
+    .then((result) => {
+      console.log(`added ${name} number ${number} to phonebook`);
+      response.json(person);
+    })
+    .catch((error) => next(error));
 });
 
 app.put('/api/persons/:id', (request, response, next) => {
   const { name, number } = request.body;
-  const person = {
-    name: name,
-    number: number,
-  };
-  Person.findByIdAndUpdate(request.params.id, person, {
-    new: true,
-    runValidators: true,
-    context: 'query',
-  })
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number },
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    }
+  )
     .then((updatedPerson) => {
       response.json(updatedPerson);
     })
@@ -89,7 +81,6 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
