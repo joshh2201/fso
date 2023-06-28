@@ -16,10 +16,12 @@ app.get('/api/persons', (request, response) => {
 });
 
 app.get('/api/info', (request, response) => {
-  const message = `<p>Phonebook has info for ${
-    persons.length
-  }</p><p>${new Date().toString()}</p>`;
-  response.send(message);
+  Person.find({}).then((persons) => {
+    const message = `<p>Phonebook has info for ${
+      persons.length
+    }</p><p>${new Date().toString()}</p>`;
+    response.send(message);
+  });
 });
 
 app.get('/api/persons/:id', (request, response, next) => {
