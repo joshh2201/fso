@@ -33,7 +33,7 @@ app.get('/api/persons/:id', (request, response) => {
     })
     .catch((error) => {
       console.log(error);
-      response.status(500).end();
+      response.status(400).send({ error: 'malformatted id' });
     });
 });
 
@@ -67,6 +67,12 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(404).end();
   }
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
