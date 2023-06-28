@@ -101,6 +101,8 @@ const App = () => {
                 person.id === updateId ? updatedPerson : person
               )
             );
+            setNewName('');
+            setNewNumber('');
             updateErrorMessage(
               `Updated ${name}'${name.at(-1) === 's' ? '' : 's'} number`,
               'success'
@@ -126,7 +128,7 @@ const App = () => {
   const deletePerson = (event) => {
     const name = event.target.getAttribute('data-name');
     if (window.confirm(`Delete ${name}?`)) {
-      const id = parseInt(event.target.getAttribute('data-key'));
+      const id = event.target.getAttribute('data-key');
       personService.remove(id).then(() => {
         setPersons(persons.filter((person) => person.id !== id));
         updateErrorMessage(`Deleted ${name}`, 'success');
