@@ -116,12 +116,19 @@ const App = () => {
           });
       }
     } else {
-      personService.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName('');
-        setNewNumber('');
-        updateErrorMessage(`Added ${returnedPerson.name}`, 'success');
-      });
+      personService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+          updateErrorMessage(`Added ${returnedPerson.name}`, 'success');
+        })
+        .catch((error) => {
+          setNewName('');
+          setNewNumber('');
+          updateErrorMessage(error.response.data.error, 'error');
+        });
     }
   };
 
