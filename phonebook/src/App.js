@@ -108,11 +108,8 @@ const App = () => {
               'success'
             );
           })
-          .catch(() => {
-            updateErrorMessage(
-              `${name} was already removed from server`,
-              'error'
-            );
+          .catch((error) => {
+            updateErrorMessage(error.response.data.error, 'error');
           });
       }
     } else {
