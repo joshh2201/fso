@@ -1,0 +1,21 @@
+GET http://localhost:3001/api/persons
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "external re-render",
+    "number": "123"
+}
+###
+DELETE http://localhost:3001/api/persons/64949d7ba38089a53e8d9a25
+###
+
+###
+PUT http://localhost:3001/api/persons/64934b2c7d182019a54fe045
+Content-Type: application/json
+
+{
+    "name": "Joshua",
+    "number": "456"
+}
