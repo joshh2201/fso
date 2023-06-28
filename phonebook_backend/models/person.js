@@ -1,4 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
+
 mongoose.set('strictQuery', false);
 const url = process.env.MONGODB_URI;
 
@@ -6,7 +10,7 @@ console.log('connecting to', url);
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected to Mongo DB');
   })
   .catch((error) => {
@@ -23,10 +27,10 @@ const personSchema = new mongoose.Schema({
     type: String,
     minLength: 8,
     validate: {
-      validator: function(v) {
+      validator(v) {
         return /\d{3}-\d{3}-\d{4}/.test(v);
       },
-      message: props => `${props.value} is not a valid phone number!`
+      message: (props) => `${props.value} is not a valid phone number!`,
     },
     required: true,
   },
