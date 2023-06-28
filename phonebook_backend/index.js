@@ -36,7 +36,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.post('/api/persons', (request, respons, next) => {
+app.post('/api/persons', (request, response, next) => {
   const { name, number } = request.body;
   const person = new Person({ name, number });
   person
