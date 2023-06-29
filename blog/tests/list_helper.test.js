@@ -110,3 +110,18 @@ describe('favoriteBlog', () => {
     });
   });
 });
+
+describe('mostBlogs', () => {
+  test('one blog returns the author of the blog and 1 blog', () => {
+    const result = listHelper.mostBlogs(oneBlog);
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 1 });
+  });
+  test('empty array returns null', () => {
+    const result = listHelper.mostBlogs([]);
+    expect(result).toBe(null);
+  });
+  test('multiple blogs returns the author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs);
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
+  });
+});
