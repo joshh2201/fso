@@ -24,7 +24,9 @@ const mostBlogs = (blogs) => {
     _.keys(authorCounts),
     (author) => authorCounts[author]
   );
-  return { author: topAuthor, blogs: authorCounts[topAuthor] };
+  return topAuthor
+    ? { author: topAuthor, blogs: authorCounts[topAuthor] }
+    : null;
 };
 
 module.exports = {
