@@ -13,6 +13,13 @@ app.get('/api/blogs', (request, response) => {
   });
 });
 
+app.post('/api/blogs', (request, response) => {
+  const blog = new Blog(request.body);
+  blog.save().then((result) => {
+    response.status(201).json(result);
+  });
+});
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
