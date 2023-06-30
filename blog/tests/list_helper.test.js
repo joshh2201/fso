@@ -125,3 +125,18 @@ describe('mostBlogs', () => {
     expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
   });
 });
+
+describe('mostLikes', () => {
+  test('one blog returns the author of the blog and number of likes', () => {
+    const result = listHelper.mostLikes(oneBlog);
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 5 });
+  });
+  test('empty array returns null', () => {
+    const result = listHelper.mostLikes([]);
+    expect(result).toBe(null);
+  });
+  test('multiple blogs returns the author with most blogs', () => {
+    const result = listHelper.mostLikes(blogs);
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 });
+  });
+});
