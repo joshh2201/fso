@@ -20,6 +20,7 @@ const parseArguments = (args: string[]): bmiValues => {
 
 const calculateBmi = (height: number, weight: number): string => {
   // height in cm, weight in kg
+  if (height === 0) throw new Error('Can\t divide by 0!');
   const bmi: number = weight / (height / 100) ** 2; // convert height to m
   if (bmi < 18.5) {
     return 'Underweight';
@@ -27,7 +28,7 @@ const calculateBmi = (height: number, weight: number): string => {
     return 'Normal Weight';
   } else if (bmi >= 25 && bmi < 30) {
     return 'Overweight';
-  } else if (bmi >= 30) {
+  } else {
     return 'Obese';
   }
 };
